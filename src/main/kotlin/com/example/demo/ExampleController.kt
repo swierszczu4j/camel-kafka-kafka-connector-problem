@@ -19,8 +19,8 @@ class ExampleController(
 
     @PostMapping("/examples")
     fun addExample(@RequestBody event: ExampleEvent) {
-        val producerRecord = ProducerRecord<String, String>(inboundExampleTopicName, event.exampleId.toString(), objectMapper.writeValueAsString(event));
-        producerRecord.headers().add("CamelHeader.kafka.KEY", event.exampleId.toString().toByteArray());
+        val producerRecord = ProducerRecord(inboundExampleTopicName, event.exampleId.toString(), objectMapper.writeValueAsString(event))
+        producerRecord.headers().add("CamelHeader.kafka.KEY", event.exampleId.toString().toByteArray())
         kafkaTemplate.send(producerRecord).get(5, TimeUnit.SECONDS)
     }
 

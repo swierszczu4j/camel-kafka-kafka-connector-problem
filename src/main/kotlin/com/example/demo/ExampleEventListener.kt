@@ -17,7 +17,7 @@ class ExampleEventListener {
     @KafkaListener(topics = ["\${example.outbound-topic-name}"])
     fun listenDestination(message: ConsumerRecord<String?, String?>) {
         logger.info("Outbound topic key: ${message.key()}")
-        logger.info("Outbound headers key: ${message.headers().toString()}")
+        logger.info("Outbound headers key: ${message.headers()}")
         message.headers().forEach { logger.info("Header ${it.key()}: ${String(it.value())}") }
         logger.info("Outbound topic value: ${message.value()}")
     }
