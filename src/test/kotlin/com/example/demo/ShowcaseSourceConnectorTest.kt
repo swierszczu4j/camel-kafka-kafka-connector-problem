@@ -45,7 +45,7 @@ import java.util.stream.Stream
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-internal class ShowcaseTest(
+internal class ShowcaseSourceConnectorTest(
         private val objectMapper: ObjectMapper,
         @Value("\${example.inbound-topic-name}")
         private val inboundExampleTopicName: String,
@@ -59,13 +59,16 @@ internal class ShowcaseTest(
     fun setupConnector() {
         val connectorConfig = """
             {
-              "name": "camel-showcase-connector",
+              "name": "camel-showcase-source-connector",
               "config": {
-                "connector.class": "org.apache.camel.kafkaconnector.kafka.CamelKafkaSinkConnector",
+                "connector.class": "org.apache.camel.kafkaconnector.kafka.CamelKafkaSourceConnector",
                 "tasks.max": "1",
-                "camel.sink.path.topic": "$outboundExampleTopicName",
-                "camel.sink.endpoint.brokers": "kafka:9092",
-                "topics": "$inboundExampleTopicName",
+                "topics": "$outboundExampleTopicName",
+                "camel.source.endpoint.brokers": "kafka:9092",
+                "camel.source.path.topic": "$inboundExampleTopicName",
+                "camel.source.endpoint.autoOffsetReset": "earliest",
+                "camel.source.camelMessageHeaderKey": "CamelHeader.kafka.KEY",
+                "camel.source.contentLogLevel": "DEBUG",
                 "key.converter": "org.apache.kafka.connect.storage.StringConverter",
                 "value.converter": "org.apache.kafka.connect.storage.StringConverter"
               }
@@ -127,7 +130,7 @@ internal class ShowcaseTest(
 
 
     companion object {
-        private val logger = LoggerFactory.getLogger(ShowcaseTest::class.java)
+        private val logger = LoggerFactory.getLogger(ShowcaseSourceConnectorTest::class.java)
 
         @BeforeAll
         @JvmStatic
