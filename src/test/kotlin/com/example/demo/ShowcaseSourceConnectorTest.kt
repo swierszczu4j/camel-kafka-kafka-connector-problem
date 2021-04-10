@@ -67,8 +67,7 @@ internal class ShowcaseSourceConnectorTest(
                 "camel.source.endpoint.brokers": "kafka:9092",
                 "camel.source.path.topic": "$inboundExampleTopicName",
                 "camel.source.endpoint.autoOffsetReset": "earliest",
-                "camel.source.camelMessageHeaderKey": "CamelHeader.kafka.KEY",
-                "camel.source.contentLogLevel": "DEBUG",
+                "camel.source.camelMessageHeaderKey": "kafka.KEY",
                 "key.converter": "org.apache.kafka.connect.storage.StringConverter",
                 "value.converter": "org.apache.kafka.connect.storage.StringConverter"
               }
